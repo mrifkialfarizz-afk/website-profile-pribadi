@@ -27,7 +27,7 @@ export default class HomePage {
           <div class="social-links">
             <a href="mailto:m.rifkialfarizz@gmail.com">Email</a>
             <a href="https://instagram.com/rfky_alfriz" target="_blank" rel="noopener noreferrer">Instagram</a>
-            <a href="https://www.tiktok.com/@rfkyalfarizz" target="_blank" rel="noopener noreferrer">Tiktok</a>
+            <a href="https://www.tiktok.com/@rifkyalfarizz" target="_blank" rel="noopener noreferrer">Tiktok</a>
           </div>
         </div>
       </section>
