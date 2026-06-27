@@ -33,14 +33,10 @@ export default class HomePage {
       </section>
 
       <section id="skills">
-        <h2>Skill</h2>
+        <h2>Hobi</h2>
         <div class="skills">
-          <span class="skill-chip">HTML &amp; CSS</span>
-          <span class="skill-chip">JavaScript (Async/Await)</span>
-          <span class="skill-chip">SPA &amp; MVP</span>
-          <span class="skill-chip">View Transition API</span>
-          <span class="skill-chip">Media Stream &amp; Canvas API</span>
-          <span class="skill-chip">Node.js &amp; Express</span>
+          <span class="skill-chip">Badminton</span>
+          <span class="skill-chip">Hiking</span>
         </div>
       </section>
 
