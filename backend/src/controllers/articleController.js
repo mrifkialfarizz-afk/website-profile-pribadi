@@ -25,7 +25,8 @@ exports.getAll = async (req, res) => {
     const [rows] = await db.query(query, params);
     res.json({ success: true, data: rows });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error('[DB ERROR]', err.code, err.message, err);
+    res.status(500).json({ success: false, message: err.message || err.code || 'Unknown DB error' });
   }
 };
 
@@ -51,7 +52,8 @@ exports.getStats = async (req, res) => {
       },
     });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error('[DB ERROR]', err.code, err.message, err);
+    res.status(500).json({ success: false, message: err.message || err.code || 'Unknown DB error' });
   }
 };
 
@@ -64,7 +66,8 @@ exports.getById = async (req, res) => {
     }
     res.json({ success: true, data: rows[0] });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error('[DB ERROR]', err.code, err.message, err);
+    res.status(500).json({ success: false, message: err.message || err.code || 'Unknown DB error' });
   }
 };
 
@@ -92,7 +95,8 @@ exports.create = async (req, res) => {
     const [rows] = await db.query('SELECT * FROM articles WHERE id = ?', [result.insertId]);
     res.status(201).json({ success: true, data: rows[0] });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error('[DB ERROR]', err.code, err.message, err);
+    res.status(500).json({ success: false, message: err.message || err.code || 'Unknown DB error' });
   }
 };
 
@@ -127,7 +131,8 @@ exports.update = async (req, res) => {
     const [rows] = await db.query('SELECT * FROM articles WHERE id = ?', [req.params.id]);
     res.json({ success: true, data: rows[0] });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    console.error('[DB ERROR]', err.code, err.message, err);
+    res.status(500).json({ success: false, message: err.message || err.code || 'Unknown DB error' });
   }
 };
 
@@ -147,7 +152,8 @@ exports.remove = async (req, res) => {
 
     await db.query('DELETE FROM articles WHERE id = ?', [req.params.id]);
     res.json({ success: true, message: 'Artikel berhasil dihapus' });
-  } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+ } catch (err) {
+    console.error('[DB ERROR]', err.code, err.message, err);
+    res.status(500).json({ success: false, message: err.message || err.code || 'Unknown DB error' });
   }
 };
