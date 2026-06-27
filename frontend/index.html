@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Nama Anda - Portofolio Pribadi</title>
+
+<!-- PWA: manifest, ikon, theme color (NILAI: Implementasi PWA) -->
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#0D9488" />
+<link rel="icon" href="icons/icon-192.png" type="image/png" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Portofolio RAF" />
+
+<link rel="stylesheet" href="src/styles/main.css" />
+<link rel="stylesheet" href="src/styles/transitions.css" />
+<!-- Leaflet.js (Map Location) — CDN, dipakai sebagai variabel global L -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+  <!-- Router merender semua halaman ke dalam elemen ini -->
+  <div id="app"></div>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>
