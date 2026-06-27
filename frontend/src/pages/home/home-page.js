@@ -25,9 +25,9 @@ export default class HomePage {
             Saat ini saya sedang aktif menjadi mahasiswa di Universitas Nahdlatul Ulama Al Ghazali Cilacap dengan Program Studi Informatika.
           </p>
           <div class="social-links">
-            <a href="m.rifkialfarizz@gmail.com">Email</a>
-            <a href="rfky_alfriz">Instagram</a>
-            <a href="rfkyalfarizz">Tiktok</a>
+            <a href="mailto:m.rifkialfarizz@gmail.com">Email</a>
+            <a href="https://instagram.com/rfky_alfriz" target="_blank" rel="noopener noreferrer">Instagram</a>
+            <a href="https://www.tiktok.com/@rfkyalfarizz" target="_blank" rel="noopener noreferrer">Tiktok</a>
           </div>
         </div>
       </section>
