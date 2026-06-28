@@ -27,6 +27,10 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server berjalan di http://localhost:${PORT}`);
-  console.log(`Media diakses lewat   http://localhost:${PORT}/uploads/<nama-file>`);
+  console.log(`\n==================================================`);
+  console.log(`🚀 Server backend berhasil berjalan!`);
+  console.log(`🔗 API URL     : http://localhost:${PORT}`);
+  console.log(`📂 Media URL   : http://localhost:${PORT}/uploads/<nama-file>`);
+  console.log(`==================================================`);
+  console.log(`💡 Perintah    : Tekan [Ctrl + C] untuk menghentikan server\n`);
 });
