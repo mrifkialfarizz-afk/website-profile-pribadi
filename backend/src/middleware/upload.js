@@ -1,29 +1,14 @@
 // upload.js — Konfigurasi Multer untuk menangani upload media (thumbnail artikel)
 //
-// Multer adalah middleware Express yang memproses request multipart/form-data,
-// yaitu format yang dipakai untuk mengunggah berkas biner (gambar) bersama data teks.
+// PENTING: pakai memoryStorage (bukan diskStorage) — file diterima sebagai
+// Buffer di memori (req.file.buffer), LALU dikirim ke Cloudinary oleh
+// controller. Tidak ada lagi yang disimpan permanen ke disk server, karena
+// disk hosting gratis (Render, dll) bersifat sementara dan terhapus saat
+// redeploy/restart.
 const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
-
-// Pastikan folder uploads/ ada (dibuat otomatis jika belum)
-const uploadDir = path.join(__dirname, '..', '..', 'uploads');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: uploadDir,
-  // Nama file unik: timestamp + angka random, agar tidak saling menimpa
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname) || '.png';
-    const unique = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-    cb(null, `${unique}${ext}`);
-  },
-});
 
 const upload = multer({
-  storage,
+  storage: multer.memoryStorage(),
   limits: { fileSize: 5 * 1024 * 1024 }, // maksimal 5MB
   fileFilter: (req, file, cb) => {
     // Hanya terima file bertipe gambar (dari kamera atau upload manual)

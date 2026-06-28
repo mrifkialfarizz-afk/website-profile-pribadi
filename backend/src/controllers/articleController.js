@@ -1,6 +1,5 @@
 const db = require('../config/db');
-const path = require('path');
-const fs = require('fs');
+const { uploadBuffer, deleteByUrl } = require('../utils/cloudinaryHelper');
 
 // GET /api/articles?search=&status=
 exports.getAll = async (req, res) => {
@@ -70,7 +69,7 @@ exports.getById = async (req, res) => {
 
 // POST /api/articles  (CREATE)
 // Menerima multipart/form-data: field teks (title, category, dst) + opsional file 'thumbnail'
-// req.body diisi Multer dari field teks, req.file diisi dari field file (jika ada)
+// req.body diisi Multer dari field teks, req.file diisi dari field file (jika ada, sbg Buffer di memori)
 exports.create = async (req, res) => {
   try {
     const { title, category, excerpt, content, status } = req.body;
@@ -79,9 +78,13 @@ exports.create = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Judul dan isi artikel wajib diisi' });
     }
 
-    // Jika ada file yang diupload (dari kamera atau pilih file), simpan path-nya.
-    // Jika tidak ada, thumbnail_url tetap null.
-    const thumbnailUrl = req.file ? `/uploads/${req.file.filename}` : null;
+    // Jika ada file yang diupload (dari kamera atau pilih file), upload ke Cloudinary
+    // lalu simpan URL permanennya. Jika tidak ada, thumbnail_url tetap null.
+    let thumbnailUrl = null;
+    if (req.file) {
+      const { url } = await uploadBuffer(req.file.buffer);
+      thumbnailUrl = url;
+    }
 
     const [result] = await db.query(
       `INSERT INTO articles (title, category, excerpt, content, thumbnail_url, status)
@@ -106,15 +109,15 @@ exports.update = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Artikel tidak ditemukan' });
     }
 
-    // Jika ada file baru diupload, gunakan itu & hapus file lama (agar tidak menumpuk).
-    // Jika tidak ada file baru, pertahankan thumbnail_url yang sudah ada.
+    // Jika ada file baru diupload, upload ke Cloudinary & hapus foto lama di Cloudinary
+    // (agar tidak menumpuk kuota). Jika tidak ada file baru, pertahankan thumbnail_url lama.
     let thumbnailUrl = existing[0].thumbnail_url;
     if (req.file) {
       if (thumbnailUrl) {
-        const oldPath = path.join(__dirname, '..', '..', thumbnailUrl);
-        fs.unlink(oldPath, () => {}); // hapus file lama, abaikan jika gagal/tidak ada
+        await deleteByUrl(thumbnailUrl);
       }
-      thumbnailUrl = `/uploads/${req.file.filename}`;
+      const { url } = await uploadBuffer(req.file.buffer);
+      thumbnailUrl = url;
     }
 
     await db.query(
@@ -139,10 +142,9 @@ exports.remove = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Artikel tidak ditemukan' });
     }
 
-    // Hapus juga file thumbnail-nya dari folder uploads/ jika ada
+    // Hapus juga foto thumbnail-nya dari Cloudinary jika ada
     if (existing[0].thumbnail_url) {
-      const filePath = path.join(__dirname, '..', '..', existing[0].thumbnail_url);
-      fs.unlink(filePath, () => {});
+      await deleteByUrl(existing[0].thumbnail_url);
     }
 
     await db.query('DELETE FROM articles WHERE id = ?', [req.params.id]);

@@ -1,5 +1,16 @@
 // dom.js — Helper DOM generik: toast, skeleton loading, format, escape HTML
 import { toastSlideIn, toastSlideOut } from '../utils/animations.js';
+import { BASE_URL } from '../config.js';
+
+/**
+ * Ubah thumbnail_url dari database jadi URL yang bisa langsung dipakai di <img src>.
+ * - Cloudinary (data baru) sudah berupa URL lengkap (https://res.cloudinary.com/...) → pakai langsung.
+ * - Data lama (sebelum pakai Cloudinary) masih path relatif (/uploads/xxx.png) → gabungkan dengan BASE_URL.
+ */
+export function resolveThumbnailUrl(thumbnailUrl) {
+  if (!thumbnailUrl) return null;
+  return thumbnailUrl.startsWith('http') ? thumbnailUrl : `${BASE_URL}${thumbnailUrl}`;
+}
 
 /** Tampilkan toast notification (pengganti alert()) */
 export function showToast(message, type = 'success', duration = 3000) {

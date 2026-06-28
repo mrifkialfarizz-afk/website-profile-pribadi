@@ -1,10 +1,9 @@
 // detail-page.js — VIEW untuk halaman Detail Artikel
 import DetailPresenter from './detail-presenter.js';
 import ArticleModel from '../../data/article-model.js';
-import { escapeHtml, formatDate, showToast } from '../../ui/dom.js';
+import { escapeHtml, formatDate, showToast, resolveThumbnailUrl } from '../../ui/dom.js';
 import { fadeIn, popIn } from '../../utils/animations.js';
 import { downloadBlob } from '../../utils/camera.js';
-import { BASE_URL } from '../../config.js';
 
 export default class DetailPage {
   constructor({ params } = {}) {
@@ -69,7 +68,7 @@ export default class DetailPage {
           <img
             id="detail-img"
             class="detail-hero__img"
-            src="${BASE_URL}${article.thumbnail_url}"
+            src="${resolveThumbnailUrl(article.thumbnail_url)}"
             alt="${escapeHtml(article.title)}"
             style="view-transition-name: article-img-${article.id}"
           />
@@ -99,7 +98,7 @@ export default class DetailPage {
   /** PRAKTIKUM 7: ambil gambar dari URL -> Blob -> unduh ke perangkat */
   async _downloadImage(article) {
     try {
-      const res = await fetch(`${BASE_URL}${article.thumbnail_url}`);
+      const res = await fetch(resolveThumbnailUrl(article.thumbnail_url));
       const blob = await res.blob();
       downloadBlob(blob, `artikel-${article.id}.png`);
       showToast('Gambar berhasil diunduh!', 'success');

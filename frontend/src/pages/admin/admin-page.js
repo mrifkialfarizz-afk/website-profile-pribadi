@@ -4,10 +4,9 @@
 // (ambil foto thumbnail dari kamera), upload file manual, dan Optimistic UI delete.
 import AdminPresenter from './admin-presenter.js';
 import ArticleModel from '../../data/article-model.js';
-import { escapeHtml, showToast } from '../../ui/dom.js';
+import { escapeHtml, showToast, resolveThumbnailUrl } from '../../ui/dom.js';
 import { popIn } from '../../utils/animations.js';
 import { startCamera, stopCamera, captureFrame, canvasToBlob } from '../../utils/camera.js';
-import { BASE_URL } from '../../config.js';
 
 export default class AdminPage {
   constructor() {
@@ -219,7 +218,7 @@ export default class AdminPage {
 
     this._existingThumbnailUrl = article.thumbnail_url;
     this._pendingThumbnailBlob = null;
-    this._renderThumbPreview(article.thumbnail_url ? `${BASE_URL}${article.thumbnail_url}` : null);
+    this._renderThumbPreview(article.thumbnail_url ? resolveThumbnailUrl(article.thumbnail_url) : null);
 
     document.getElementById('form-title').textContent = `Edit Artikel #${id}`;
     document.getElementById('cancel-edit').classList.remove('hidden');

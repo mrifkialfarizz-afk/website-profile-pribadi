@@ -1,8 +1,7 @@
 import HomePresenter from './home-presenter.js';
 import ArticleModel from '../../data/article-model.js';
-import { skeletonCards, escapeHtml, formatDate, showToast } from '../../ui/dom.js';
+import { skeletonCards, escapeHtml, formatDate, showToast, resolveThumbnailUrl } from '../../ui/dom.js';
 import { cardEnter, fadeIn } from '../../utils/animations.js';
-import { BASE_URL } from '../../config.js';
 import { debounce } from '../../utils/debounce.js';
 import { getCurrentPosition, reverseGeocode } from '../../utils/geolocation.js';
 import { initMap, setUserMarker, destroyMap, HOME_LOCATION } from '../../utils/map.js';
@@ -157,7 +156,7 @@ export default class HomePage {
           <div class="article-card__img-wrap">
             <img
               class="article-card__img"
-              src="${BASE_URL}${a.thumbnail_url}"
+              src="${resolveThumbnailUrl(a.thumbnail_url)}"
               alt="${escapeHtml(a.title)}"
               loading="lazy"
               style="view-transition-name: article-img-${a.id}"
